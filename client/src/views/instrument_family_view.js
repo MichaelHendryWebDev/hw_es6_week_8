@@ -1,6 +1,5 @@
 const PubSub = require('../helpers/pub_sub.js');
 
-// import '../helpers/pub_sub.js'
 
 // const InstrumentFamilyView = function (container) {
 //   this.container = container;
@@ -15,6 +14,14 @@ class InstrumentFamilyView {
   }
 }
 
+
+InstrumentFamilyView.bindEvents = function () {
+  PubSub.subscribe('InstrumentFamilies:selected-family-ready', (evt) => {
+    const instrumentFamily = evt.detail;
+    this.render(instrumentFamily);
+  });
+};
+
 InstrumentFamilyView.prototype.bindEvents = function () {
   PubSub.subscribe('InstrumentFamilies:selected-family-ready', (evt) => {
     const instrumentFamily = evt.detail;
@@ -24,6 +31,7 @@ InstrumentFamilyView.prototype.bindEvents = function () {
 
 InstrumentFamilyView.prototype.render = function (family) {
   this.container.innerHTML = '';
+
 
   const familyName = this.createElement('h2', family.name);
   this.container.appendChild(familyName);
@@ -37,6 +45,7 @@ InstrumentFamilyView.prototype.render = function (family) {
   const instrumentList = this.createInstrumentList(family.instruments);
   this.container.appendChild(instrumentList);
 };
+
 
 InstrumentFamilyView.prototype.createElement = function (elementType, text) {
   const element = document.createElement(elementType);
@@ -56,4 +65,5 @@ InstrumentFamilyView.prototype.createInstrumentList = function (instruments) {
   return list;
 };
 
-module.exports = InstrumentFamilyView;
+// module.exports = InstrumentFamilyView;
+export default InstrumentFamilyView;
